@@ -1,4 +1,31 @@
 # 나 보려고 만든 메뉴얼.
+- 종료 메시지 인터셉트.
+    프로그램에 기본으로 구현되는 X버튼은 구현한 browserwindow를 따라감.
+    x클릭 시 상호작용을 처리하지 않을 경우에는 해당 구문을 app의 before-quit에서 구현하여 처리할 수 있다.
+
+    let closeWindow = false;    
+    if(closeWindow == false) {
+        let response = dialog.showMessageBoxSync(BrowserWindow.getAllWindows()[0], {
+            type: 'question',
+            buttons: ['예', '아니오'],
+            defaultId: 1,
+            title: '종료 확인!',
+            message: '프로그램을 종료하시겠습니까?'
+        });
+
+        if(response == 0) {
+            closeWindow = true;
+            app.quit();
+        } else {
+            closeWindow = false;
+            ev.preventDefault();
+        }
+    } else {
+        app.quit();
+    }
+    
+    browserwindow까지 커버할 경우에는 app 기동시, browserwindow의 close 이벤트에 구현한다.
+    
 
 - 메뉴 커스텀 방법.
     setApplicationMenu 를 사용하여 템플릿을 지정해 메뉴를 만들 경우.
